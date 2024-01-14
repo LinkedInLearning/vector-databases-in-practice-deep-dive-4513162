@@ -1,14 +1,7 @@
-import weaviate
+import utils
 import weaviate.classes as wvc
-import os
 
-client = weaviate.connect_to_wcs(
-    cluster_url="https://juofherxrfgo1cki4ierfa.c1.europe-west3.gcp.weaviate.cloud",
-    auth_credentials=weaviate.AuthApiKey("RfyaBcQcbicZifmJp4fi0AmgnvGM5bUJYYjm"),
-    headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")  # Replace with your own API key
-    },
-)
+client = utils.connect_to_demo_db()  # Connect to the demo database
 
 movies = client.collections.get("Movie")
 
@@ -19,7 +12,9 @@ response = movies.query.bm25(  # Keyword search for the word "love"
 )
 
 for o in response.objects:
-    print(o.properties["title"])  # Show which titles were found
+    print(o.properties["title"])        # Show which titles were found
     print(o.properties["description"])  # Show the description
-    print(f"{o.metadata.score:.3f}")  # What was the score?
-    print()
+    print(f"{o.metadata.score:.3f}\n")  # What was the score?
+
+
+client.close()

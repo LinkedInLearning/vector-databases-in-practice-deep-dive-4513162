@@ -1,14 +1,6 @@
-import weaviate
-import weaviate.classes as wvc
-import os
+import utils
 
-client = weaviate.connect_to_wcs(
-    cluster_url="https://juofherxrfgo1cki4ierfa.c1.europe-west3.gcp.weaviate.cloud",
-    auth_credentials=weaviate.AuthApiKey("RfyaBcQcbicZifmJp4fi0AmgnvGM5bUJYYjm"),
-    headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")  # Replace with your own API key
-    },
-)
+client = utils.connect_to_demo_db()  # Connect to the demo database
 
 movies = client.collections.get("Movie")
 
@@ -22,8 +14,8 @@ response = movies.generate.near_text(
 )
 
 for o in response.objects:
-    print(o.properties["title"])  # Show which titles were found
-    print(o.generated)  # RAG output
+    print(o.properties["title"])    # Show which titles were found
+    print(o.generated)              # RAG output
     print()
 
 
@@ -36,4 +28,7 @@ response = movies.generate.near_text(
     """
 )
 
-print(response.generated)
+print(response.generated)  # Print the generated text
+
+
+client.close()

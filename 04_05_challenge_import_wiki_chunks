@@ -1,0 +1,36 @@
+import utils
+import weaviate.classes as wvc
+from weaviate.util import generate_uuid5
+from pathlib import Path
+import json
+
+client = utils.connect_to_my_db()  # Connect to our own database
+
+# Load the chunked pages to a file
+chunks_path = Path("chunks.json")
+chunked_pages = json.loads(chunks_path.read_text())
+for k, v in chunked_pages.items():
+    print(f"Page {k} has {len(v)} chunks")
+
+# Create a collection called WikiChunk
+# Use the text2vec_openai vectorizer and the openai generative module
+# The properties should be:
+# title (text)
+# chunk (text)
+# chunk_number (int)
+
+
+# Get the collection
+
+
+# Insert the chunks
+# Iterate over the chunked pages
+
+    # Create a list of DataObjects
+
+    # Iterate over the chunks with enumerate()
+    # Use the index as the chunk number
+    # How would you generate a unique UUID for each chunk?
+
+    # Insert the chunks for that document
+

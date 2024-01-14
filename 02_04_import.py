@@ -1,21 +1,13 @@
-from weaviate.util import generate_uuid5
-import weaviate
+import utils
 import weaviate.classes as wvc
+from weaviate.util import generate_uuid5
 import pandas as pd
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
+client = utils.connect_to_my_db()  # Connect to our own database
 
-client = weaviate.connect_to_wcs(
-    cluster_url=os.getenv("DEMO_WEAVIATE_URL"),  # Demo server
-    auth_credentials=weaviate.AuthApiKey(os.getenv("DEMO_WEAVIATE_RO_KEY")),  # Demo server read-only API key
-    headers={"X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")},  # Replace with your own API key
-)
+movie_df = pd.read_csv("data/movies_data.csv")  # Load the data
 
-movie_df = pd.read_csv("data/movies_data.csv")
-
-movies = client.collections.get("Movie")
+movies = client.collections.get("Movie")   # Get the Movie collection
 
 
 movie_objs = list()
@@ -30,7 +22,7 @@ for i, row in movie_df.iterrows():
     }
 
     movie_uuid = generate_uuid5(row["ID"])
-    data_obj = wvc.DataObject(
+    data_obj = wvc.data.DataObject(
         properties=props,
         uuid=movie_uuid,
     )
@@ -40,3 +32,5 @@ response = movies.data.insert_many(movie_objs)
 
 print(f"Insertion complete with {len(response.all_responses)} objects.")
 print(f"Insertion errors: {len(response.errors)}.")
+
+client.close()
