@@ -10,25 +10,39 @@ client.collections.delete("Synopsis")
 
 # Add reviews first
 reviews = client.collections.create(
+    # Set the name of the collection
     name="Review",
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
-    generative_config=wvc.config.Configure.Generative.openai(),
+
+    # Set modules to be used
+    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer
+    generative_config=wvc.config.Configure.Generative.openai(),             # Set the generative model
+    # Could also explicitly set the model, e.g.:
+    # generative_config=wvc.config.Configure.Generative.openai(model="gpt-4-1106-preview"),
+
+    # Define the properties of the collection
     properties=[
         wvc.config.Property(
-            name="body",
-            data_type=wvc.config.DataType.TEXT,
+            name="body",  # Set the name of the property
+            data_type=wvc.config.DataType.TEXT,  # Set the data type of the property
         ),
     ],
 )
 
 # Add movies
 movies = client.collections.create(
+    # Set the name of the collection
     name="Movie",
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
-    generative_config=wvc.config.Configure.Generative.openai(),
+
+    # Set modules to be used
+    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer module
+    generative_config=wvc.config.Configure.Generative.openai(),             # Set the generative module
+
+    # Define the properties of the collection
     properties=[
         wvc.config.Property(
+            # Set the name of the property
             name="title",
+            # Set the data type of the property
             data_type=wvc.config.DataType.TEXT,
         ),
         wvc.config.Property(
@@ -53,11 +67,11 @@ movies = client.collections.create(
             skip_vectorization=True,
         ),
     ],
-    # A reference property with name "hasReview". Points to the "Review" collection
+    # Set reference properties
     references=[
         wvc.config.ReferenceProperty(
-            name="hasReview",
-            target_collection="Review",
+            name="hasReview",           # Set the name of the reference property
+            target_collection="Review", # Set the name of the target collection
         )
     ],
 )
@@ -72,7 +86,7 @@ movies = client.collections.create(
 synopses = client.collections.create(
     name="Synopsis",
     vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
-    generative_config=wvc.config.Configure.Generative.openai(),
+    generative_config=wvc.config.Configure.Generative.openai(model="gpt-4-1106-preview"),
     properties=[
         wvc.config.Property(
             name="body",

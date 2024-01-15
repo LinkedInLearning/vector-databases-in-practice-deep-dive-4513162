@@ -3,7 +3,8 @@ import streamlit as st
 import weaviate.classes as wvc
 from weaviate.util import generate_uuid5
 
-client = utils.connect_to_demo_db()  # Connect to the demo database
+client = utils.connect_to_my_db()       # Connect to the demo database
+# client = utils.connect_to_demo_db()   # You can also connect to the demo database
 
 movies = client.collections.get("Movie")
 synopses = client.collections.get("Synopsis")
@@ -148,7 +149,6 @@ with rec_tab:
     # Only do something if the user fills in the search string and the context
     if len(search_string) > 0 and len(occasion) > 0:
         st.subheader("Recommendations")
-        st.write(response.generated)
 
         response = synopses.generate.hybrid(
             query=search_string,
@@ -173,6 +173,8 @@ with rec_tab:
                 ),
             ],
         )
+
+        st.write(response.generated)
 
         st.subheader("Movie analysis")
         for i, m in enumerate(response.objects):

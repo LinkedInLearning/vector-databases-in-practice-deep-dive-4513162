@@ -55,7 +55,8 @@ for i, row in movie_df.iterrows():
     data_obj = wvc.data.DataObject(
         properties=props,
         uuid=movie_uuid,
-        references={"hasReview": review_uuids},  # Add the reviews  # TODO - update to just pass UUIDs
+        references={"hasReview": wvc.data.Reference.to(review_uuids)},
+        # references={"hasReview": review_uuids},
     )
     movie_objs.append(data_obj)
 
@@ -88,7 +89,8 @@ for i, row in movie_df.iterrows():
     data_obj = wvc.data.DataObject(
         properties=props,
         uuid=movie_uuid,
-        references={"forMovie": wvc.data.Reference.to(movie_uuid)},  # TODO - update to just pass UUIDs
+        references={"forMovie": wvc.data.Reference.to(movie_uuid)},
+        # references={"forMovie": movie_uuid},
     )
 
     # Add the synopsis object to the list

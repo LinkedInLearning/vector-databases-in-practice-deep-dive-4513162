@@ -82,6 +82,7 @@ with rec_tab:
     occasion = st.text_input(label="In this context ...", value="any occasion")
 
     st.subheader("Recommendations")
+
     st.write("Movie ABC is recommended here because..")
 
     st.subheader("Movie analysis")

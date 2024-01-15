@@ -3,14 +3,21 @@ import weaviate.classes as wvc
 
 client = utils.connect_to_my_db()  # Connect to our own database
 
-# Delete our previously created collection
+# Delete any previously created collections with the same name
 client.collections.delete("Movie")
 
 # Add reviews first
 reviews = client.collections.create(
+    # Set the name of the collection
     name="Review",
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
-    generative_config=wvc.config.Configure.Generative.openai(),
+
+    # Set modules to be used
+    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer
+    generative_config=wvc.config.Configure.Generative.openai(),             # Set the generative model
+    # Could also explicitly set the model, e.g.:
+    # generative_config=wvc.config.Configure.Generative.openai(model="gpt-4-1106-preview"),
+
+    # Define the properties of the collection
     properties=[
         wvc.config.Property(
             name="body",
@@ -21,12 +28,19 @@ reviews = client.collections.create(
 
 # Add movies
 movies = client.collections.create(
+    # Set the name of the collection
     name="Movie",
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
-    generative_config=wvc.config.Configure.Generative.openai(),
+
+    # Set modules to be used
+    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer module
+    generative_config=wvc.config.Configure.Generative.openai(),             # Set the generative module
+
+    # Define the properties of the collection
     properties=[
         wvc.config.Property(
+            # Set the name of the property
             name="title",
+            # Set the data type of the property
             data_type=wvc.config.DataType.TEXT,
         ),
         wvc.config.Property(
@@ -51,44 +65,14 @@ movies = client.collections.create(
             skip_vectorization=True,
         ),
     ],
-    # A reference property with name "hasReview". Points to the "Review" collection
+
+    # Set reference properties
     references=[
         wvc.config.ReferenceProperty(
-            name="hasReview",
-            target_collection="Review",
+            name="hasReview",           # Set the name of the reference property
+            target_collection="Review", # Set the name of the target collection
         )
     ],
 )
-
-
-# Add synopses
-synopses = client.collections.create(
-    name="Synopsis",
-    vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),
-    generative_config=wvc.config.Configure.Generative.openai(),
-    properties=[
-        wvc.config.Property(
-            name="body",
-            data_type=wvc.config.DataType.TEXT,
-        ),
-    ],
-    # A reference property with name "forMovie". Points to the "Movie" collection
-    references=[
-        wvc.config.ReferenceProperty(
-            name="forMovie",
-            target_collection="Movie",
-        )
-    ],
-)
-
-
-# Add a reference property for the "Movie" collection, with name "hasSynopsis". Points to the "Synopsis" collection
-movies.config.add_reference(
-    wvc.config.ReferenceProperty(
-        name="hasSynopsis",
-        target_collection="Synopsis"
-    )
-)
-# Now the "Movie" and "Synopsis" collections refer to each other
 
 client.close()
