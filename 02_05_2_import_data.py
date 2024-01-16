@@ -41,6 +41,7 @@ for i, row in movie_df.iterrows():
         "movie_id": row["ID"],
         "year": row["Year"],
     }
+
     # Add references to reviews
     review_uuids = list()
     for c in [1, 2, 3]:

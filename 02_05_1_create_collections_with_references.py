@@ -8,14 +8,10 @@ client.collections.delete("Movie")
 
 # Add reviews first
 reviews = client.collections.create(
-    # Set the name of the collection
     name="Review",
 
-    # Set modules to be used
     vectorizer_config=wvc.config.Configure.Vectorizer.text2vec_openai(),    # Set the vectorizer
     generative_config=wvc.config.Configure.Generative.openai(),             # Set the generative model
-    # Could also explicitly set the model, e.g.:
-    # generative_config=wvc.config.Configure.Generative.openai(model="gpt-4-1106-preview"),
 
     # Define the properties of the collection
     properties=[
@@ -69,8 +65,8 @@ movies = client.collections.create(
     # Set reference properties
     references=[
         wvc.config.ReferenceProperty(
-            name="hasReview",           # Set the name of the reference property
-            target_collection="Review", # Set the name of the target collection
+            name="hasReview",               # Set the name of the reference property
+            target_collection=reviews.name, # Set the name of the target collection
         )
     ],
 )

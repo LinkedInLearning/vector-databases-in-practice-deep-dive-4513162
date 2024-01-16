@@ -3,10 +3,9 @@ import weaviate.classes as wvc
 from weaviate.util import generate_uuid5
 import pandas as pd
 
-client = utils.connect_to_my_db()  # Connect to our own database
-
 movie_df = pd.read_csv("data/movies_data.csv")  # Load the data
 
+client = utils.connect_to_my_db()  # Connect to our own database
 movies = client.collections.get("Movie")   # Get the Movie collection
 
 
