@@ -34,15 +34,15 @@ try:
         # Search results - movie summaries
         st.header("Search results")
 
-        if len(query_string) > 0:  # Only run a search if there is an input
+        movie_filter = (
+            wvc.query.Filter.by_property("rating").greater_or_equal(value_range[0])
+            & wvc.query.Filter.by_property("rating").less_or_equal(value_range[1])
+        )
+        synopsis_xref = wvc.query.QueryReference(
+            link_on="hasSynopsis", return_properties=["body"]
+        )
 
-            movie_filter = (
-                wvc.query.Filter.by_property("rating").greater_or_equal(value_range[0])
-                & wvc.query.Filter.by_property("rating").less_or_equal(value_range[1])
-            )
-            synopsis_xref = wvc.query.QueryReference(
-                link_on="hasSynopsis", return_properties=["body"]
-            )
+        if len(query_string) > 0:  # Only run a search if there is an input
 
             if search_type == "Vector":
                 response = movies.query.near_text(

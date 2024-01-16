@@ -54,7 +54,7 @@ for i, row in movie_df.iterrows():
     data_obj = wvc.data.DataObject(
         properties=props,
         uuid=movie_uuid,
-        references={"hasReview": wvc.data.Reference.to(review_uuids)},
+        references={"hasReview": review_uuids},
     )
     movie_objs.append(data_obj)
 

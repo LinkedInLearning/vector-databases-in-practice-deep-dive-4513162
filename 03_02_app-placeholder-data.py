@@ -85,5 +85,5 @@ with rec_tab:
             movie_title = m
             movie_id = i
             movie_description = "Movie description here"
-            with st.expander(f"Movie title: {movie_title} id: {movie_id}"):
+            with st.expander(f"Movie title: {movie_title}, ID: {movie_id}"):
                 st.write(movie_description)
