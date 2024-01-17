@@ -87,8 +87,9 @@ try:
             with st.expander(movie.properties["title"]):
                 rating = movie.properties["rating"]
                 movie_id = movie.properties["movie_id"]
-                synopsis = movie.references["hasSynopsis"].objects[0].properties["body"]
                 st.write(f"**Movie rating**: {rating}, **ID**: {movie_id}")
+
+                synopsis = movie.references["hasSynopsis"].objects[0].properties["body"]
                 st.write("**Synopsis**")
                 st.write(synopsis[:200] + "...")
 
@@ -107,8 +108,10 @@ try:
         st.header("Movie details")
         title_input = st.text_input(label="Enter the movie row ID here (0-120)", value="")
         if len(title_input) > 0:  # Only do something if there is an input
+            movie_uuid = generate_uuid5(int(title_input))
+
             movie = movies.query.fetch_object_by_id(
-                uuid=generate_uuid5(int(title_input)),
+                uuid=movie_uuid,
                 return_references=[
                     wvc.query.QueryReference(
                         link_on="hasSynopsis", return_properties=["body"]
@@ -154,10 +157,10 @@ try:
             response = synopses.generate.hybrid(
                 query=search_string,
                 grouped_task=f"""
-                Provide top 2 recommendations on what to watch
-                out of the provided information of movie synopses.
-                The recommendations should be based on the user's criteria
-                of {search_string} types of movies for {occasion}.
+                The user is looking to watch
+                {search_string} types of movies for {occasion}.
+                Provide top 2 movie recommendations
+                based on the provided movie synopses.
                 """,
                 limit=5,
                 return_references=[
