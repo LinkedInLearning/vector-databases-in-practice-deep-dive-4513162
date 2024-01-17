@@ -68,6 +68,7 @@ print(f"Insertion errors: {len(response.errors)}.")
 # Add synopses data, similarly to how we added movies
 # The synopsis data is in the same CSV file, but in the "Synopsis" column
 # ====================================================================================================
+# YOUR CODE GOES HERE
 
 # Create a list of synopsis objects
 
@@ -90,6 +91,8 @@ print(f"Insertion errors: {len(response.errors)}.")
 # - use the "wvc.data.DataReference" class to create the reference objects
 # - use the "movies.data.reference_add_many" method to add the references to the collection
 # ====================================================================================================
+# YOUR CODE GOES HERE
+
 # Create a list of references
 
 # Iterate over the rows in the CSV file
