@@ -63,3 +63,5 @@ for page_name, page_chunks in chunked_pages.items():
     # Insert the chunks for that document
     wiki_chunks.data.insert_many(chunk_objs)
     print(f"Finished importing {page_name}")
+
+client.close()
