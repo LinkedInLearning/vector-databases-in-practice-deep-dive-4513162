@@ -178,7 +178,7 @@ try:  # Wrap everything in a try-finally block to ensure the connection is close
                 grouped_task=f"""
                 The user is looking to watch
                 {search_string} types of movies for {occasion}.
-                Provide top 2 movie recommendations
+                Provide a movie recommendation
                 based on the provided movie synopses.
                 """,
                 single_prompt=f"""
@@ -189,7 +189,7 @@ try:  # Wrap everything in a try-finally block to ensure the connection is close
                 and the reasons why.
                 The movie synopsis is {{body}}.
                 """,
-                limit=5,
+                limit=3,
                 return_references=[
                     wvc.query.QueryReference(
                         link_on="forMovie", return_properties=["title", "movie_id"]
