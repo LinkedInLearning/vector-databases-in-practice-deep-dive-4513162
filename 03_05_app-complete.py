@@ -130,7 +130,7 @@ try:  # Wrap everything in a try-finally block to ensure the connection is close
                 limit=3,
                 return_references=[
                     wvc.query.QueryReference(
-                        link_on="forMovie", return_properties=["title", "movie_id"]
+                        link_on="forMovie", return_properties=["title", "movie_id", "description"]
                     ),
                 ],
             )

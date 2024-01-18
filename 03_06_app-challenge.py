@@ -165,7 +165,7 @@ try:  # Wrap everything in a try-finally block to ensure the connection is close
                 limit=3,
                 return_references=[
                     wvc.query.QueryReference(
-                        link_on="forMovie", return_properties=["title", "movie_id"]
+                        link_on="forMovie", return_properties=["title", "movie_id", "description"]
                     ),
                 ],
             )
@@ -176,7 +176,8 @@ try:  # Wrap everything in a try-finally block to ensure the connection is close
             for i, m in enumerate(response.objects):
                 movie_title = m.references["forMovie"].objects[0].properties["title"]
                 movie_id = m.references["forMovie"].objects[0].properties["movie_id"]
+                movie_description = m.references["forMovie"].objects[0].properties["description"]
                 with st.expander(f"Movie title: {movie_title}, ID: {movie_id}"):
-                    st.write(m.generated)
+                    st.write(movie_description)
 finally:
     client.close()  # Gracefully close the connection
