@@ -3,8 +3,8 @@ import streamlit as st
 import weaviate.classes as wvc
 from weaviate.util import generate_uuid5
 
-client = utils.connect_to_my_db()       # Connect to the demo database
-# client = utils.connect_to_demo_db()   # You can also connect to the demo database
+client = utils.connect_to_demo_db()     # Connect to the demo database
+# client = utils.connect_to_my_db()     # You can also connect to your own database
 
 try:
     movies = client.collections.get("Movie")
@@ -23,33 +23,15 @@ try:
 
         srch_col1, srch_col2 = st.columns(2)
         with srch_col1:
-            # ====================================================================================================
-            # Challenge: App enhancements - add keyword search type
-            # The UI element for this is already added below, but you will need to add the logic to filter the results
-            # ====================================================================================================
             search_type = st.radio(
                 label="How do you want to search?",
-                options=["Vector", "Keyword", "Hybrid"]  # Keyword option added
+                options=["Vector", "Hybrid"]
             )
 
         with srch_col2:
             value_range = st.slider(label="Rating range", value=(0.0, 5.0), step=0.1)
-            # Get inputs for year range
-            # ====================================================================================================
-            # Challenge: App enhancements - add year range filter
-            # The UI element for this is already added below, but you will need to add the logic to filter the results
-            # ====================================================================================================
-            year_min = st.number_input(label="Year from", value=1960, step=1)
-            year_max = st.number_input(label="Year to", value=2023, step=1)
 
         # Search results - movie summaries
-        # ====================================================================================================
-        # Challenge: App enhancements - add keyword search type
-        # You will need to add the logic for the keyword search type
-
-        # Challenge: App enhancements - add year range filter
-        # You will need to add the logic for the year range filter
-        # ====================================================================================================
         st.header("Search results")
 
         movie_filter = (
@@ -97,14 +79,6 @@ try:
     with movie_tab:
     # Detailed movie information
 
-        # ====================================================================================================
-        # Challenge: App enhancements - add reviews
-        # You will need to fetch the corresponding review data for each movie,
-        # and then display the review text in the UI
-        # Hints:
-        # Movie reviews are stored in the "Review" collection
-        # Refer to the collection definition from chapter 2 for the property names
-        # ====================================================================================================
         st.header("Movie details")
         title_input = st.text_input(label="Enter the movie row ID here (0-120)", value="")
         if len(title_input) > 0:  # Only do something if there is an input
@@ -145,15 +119,6 @@ try:
         if len(search_string) > 0 and len(occasion) > 0:
             st.subheader("Recommendations")
 
-            # ====================================================================================================
-            # Challenge: App enhancements - add individual movie analysis
-            # You will need to add a prompt that to analyse each movie individually
-            # Hints:
-            # The prompt should be similar to the one above, but for each movie.
-            # What parameter do you need to add to the query to make it work?
-            # Then, you will need to add a UI element to display the generated text.
-            # Consider where the generated text is stored in the response object.
-            # ====================================================================================================
             response = synopses.generate.hybrid(
                 query=search_string,
                 grouped_task=f"""
@@ -176,7 +141,10 @@ try:
             for i, m in enumerate(response.objects):
                 movie_title = m.references["forMovie"].objects[0].properties["title"]
                 movie_id = m.references["forMovie"].objects[0].properties["movie_id"]
-                with st.expander(f"Movie title: {movie_title}, ID: {movie_id}"):
-                    st.write(m.generated)
+                movie_description = m.references["forMovie"].objects[0].properties["description"]
+                with st.expander(f"Movie details"):
+                    st.write(f"Movie title: {movie_title}")
+                    st.write(f"Movie id: {movie_id}")
+                    st.write(movie_description)
 finally:
-    client.close()
+    client.close()  # Gracefully close the connection

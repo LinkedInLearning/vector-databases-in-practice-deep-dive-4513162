@@ -3,8 +3,8 @@ import streamlit as st
 import weaviate.classes as wvc
 from weaviate.util import generate_uuid5
 
-# client = utils.connect_to_my_db()       # Connect to the demo database
-client = utils.connect_to_demo_db()   # You can also connect to the demo database
+client = utils.connect_to_my_db()       # Connect to the demo database
+# client = utils.connect_to_demo_db()   # You can also connect to the demo database
 
 try:
     movies = client.collections.get("Movie")
@@ -39,8 +39,8 @@ try:
             # Challenge: App enhancements - add year range filter
             # The UI element for this is already added below, but you will need to add the logic to filter the results
             # ====================================================================================================
-            year_min = int(st.number_input(label="Year from", value=1960, step=1))
-            year_max = int(st.number_input(label="Year to", value=2023, step=1))
+            year_min = st.number_input(label="Year from", value=1960, step=1)
+            year_max = st.number_input(label="Year to", value=2023, step=1)
 
         # Search results - movie summaries
         # ====================================================================================================
@@ -55,8 +55,6 @@ try:
         movie_filter = (
             wvc.query.Filter.by_property("rating").greater_or_equal(value_range[0])
             & wvc.query.Filter.by_property("rating").less_or_equal(value_range[1])
-            & wvc.query.Filter.by_property("year").greater_or_equal(year_min)
-            & wvc.query.Filter.by_property("year").less_or_equal(year_max)
         )
         synopsis_xref = wvc.query.QueryReference(
             link_on="hasSynopsis", return_properties=["body"]
@@ -66,13 +64,6 @@ try:
 
             if search_type == "Vector":
                 response = movies.query.near_text(
-                    query=query_string,
-                    filters=movie_filter,
-                    limit=5,
-                    return_references=[synopsis_xref],
-                )
-            elif search_type == "Keyword":
-                response = movies.query.bm25(
                     query=query_string,
                     filters=movie_filter,
                     limit=5,
@@ -125,10 +116,6 @@ try:
                     wvc.query.QueryReference(
                         link_on="hasSynopsis", return_properties=["body"]
                     ),
-                    # Students to add as a challenge exercise
-                    wvc.query.QueryReference(
-                        link_on="hasReview", return_properties=["body"]
-                    ),
                 ],
             )
 
@@ -146,12 +133,6 @@ try:
 
             with st.expander("See synopsis"):
                 st.write(movie.references["hasSynopsis"].objects[0].properties["body"])
-
-            # Display reviews
-            st.subheader("Reviews")
-            for i, r in enumerate(movie.references["hasReview"].objects):
-                st.write(f"**Review {i+1}**")
-                st.write(r.properties["body"])
 
 
     with rec_tab:
@@ -181,14 +162,6 @@ try:
                 Provide top 2 movie recommendations
                 based on the provided movie synopses.
                 """,
-                single_prompt=f"""
-                Evaluate the synopsis to concisely state
-                whether it will be a good fit
-                for the user's criteria
-                of {search_string} movies for {occasion},
-                and the reasons why.
-                The movie synopsis is {{body}}.
-                """,
                 limit=5,
                 return_references=[
                     wvc.query.QueryReference(
@@ -206,4 +179,4 @@ try:
                 with st.expander(f"Movie title: {movie_title}, ID: {movie_id}"):
                     st.write(m.generated)
 finally:
-    client.close()
+    client.close()  # Gracefully close the connection

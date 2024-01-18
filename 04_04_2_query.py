@@ -24,4 +24,6 @@ response = wiki_chunks.generate.near_text(
 print(response.generated)
 print("Source data:")
 for o in response.objects:
-    print(o.properties["title"], "Chunk:", o.properties["chunk_number"])
+    print("Article title", o.properties["title"], "Chunk:", o.properties["chunk_number"])
+
+client.close()

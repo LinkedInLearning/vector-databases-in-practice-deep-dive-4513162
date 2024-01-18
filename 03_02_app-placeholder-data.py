@@ -87,3 +87,4 @@ with rec_tab:
             movie_description = "Movie description here"
             with st.expander(f"Movie title: {movie_title}, ID: {movie_id}"):
                 st.write(movie_description)
+
