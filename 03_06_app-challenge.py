@@ -145,15 +145,6 @@ try:  # Wrap everything in a try-finally block to ensure the connection is close
         if len(search_string) > 0 and len(occasion) > 0:
             st.subheader("Recommendations")
 
-            # ====================================================================================================
-            # Challenge: App enhancements - add individual movie analysis
-            # You will need to add a prompt that to analyse each movie individually
-            # Hints:
-            # The prompt should be similar to the one above, but for each movie.
-            # What parameter do you need to add to the query to make it work?
-            # Then, you will need to add a UI element to display the generated text.
-            # Consider where the generated text is stored in the response object.
-            # ====================================================================================================
             response = synopses.generate.hybrid(
                 query=search_string,
                 grouped_task=f"""
