@@ -31,3 +31,5 @@ for o in response.objects:
 # Fetch the top 5 results, and
 # Prompt the language model to generate a tagline for each movie,
 # based on the movie’s title and description properties.
+
+client.close()  # Close the connection

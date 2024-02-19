@@ -31,7 +31,7 @@ for alpha in [0.1, 0.9]:
         query="fun for the whole family",
         alpha=alpha,
         limit=3,
-        return_metadata=wvc.MetadataQuery(score=True),
+        return_metadata=wvc.query.MetadataQuery(score=True),
     )
 
     print(f"Search results with alpha: {alpha}")
