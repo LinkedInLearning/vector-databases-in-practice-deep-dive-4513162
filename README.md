@@ -1,6 +1,8 @@
 # Vector Databases in Practice: Deep Dive
 This is the repository for the LinkedIn Learning course Vector Databases in Practice: Deep Dive. The full course is available from [LinkedIn Learning][lil-course-url].
 
+![lil-thumbnail-url]
+
 _See the readme file in the main branch for updated instructions and information._
 ## Instructions
 You will be using Python scripts with `.py` extensions for this course. Each script is named to correspond to a video - such as `02_04_import.py` for video `02_04`.
@@ -40,5 +42,5 @@ You will be using Python scripts with `.py` extensions for this course. Each scr
 [0]: # (Replace these placeholder URLs with actual course URLs)
 
 [lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: http://
+[lil-thumbnail-url]: https://media.licdn.com/dms/image/D560DAQExzIHfNrjPEw/learning-public-crop_675_1200/0/1710796088760?e=2147483647&v=beta&t=RtJIZcCSpE_D2gn139R-MenV8A5gLPHDlkK7bYRjptM
 
