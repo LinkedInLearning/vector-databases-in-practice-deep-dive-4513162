@@ -3,7 +3,6 @@ node_modules
 .tmp
 npm-debug.log
 temp*
-chunks.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
